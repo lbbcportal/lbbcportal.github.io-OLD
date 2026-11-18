@@ -257,7 +257,7 @@ export const ForerunnerBulletinMaker: React.FC<ForerunnerBulletinMakerProps> = (
     setIsUploadingBg(true);
     setBgUploadError(null);
     try {
-      const resp = await fetch('/assets/aistudio/Forerunner-bulletin-background_015a5393.jpg');
+      const resp = await fetch(`${import.meta.env.BASE_URL}assets/aistudio/Forerunner-bulletin-background_015a5393.jpg`);
       if (!resp.ok) throw new Error('Could not find sample background asset.');
       const blob = await resp.blob();
       const file = new File([blob], 'Forerunner-bulletin-background.jpg', { type: 'image/jpeg' });

@@ -46,6 +46,38 @@ function resolveViewerTab(tab: string | null): string | null {
   return VIEWER_ALLOWED_TABS.has(tab) ? tab : null;
 }
 
+const KNOWN_APP_ROUTES = new Set([
+  'home',
+  'calendar',
+  'regular-services',
+  'schedules',
+  'people-ministries',
+  'settings',
+  'message-templates',
+  'tasks',
+  'quick-notes',
+  'viewer-notes',
+  'forerunner-studio',
+  'sunday-school',
+  'visitors',
+]);
+
+function getPreservedBasePathname(): string {
+  if (typeof window === 'undefined') return '/';
+  const pathname = window.location.pathname || '/';
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts.length > 0 && KNOWN_APP_ROUTES.has(parts[parts.length - 1].toLowerCase())) {
+    const baseParts = parts.slice(0, -1);
+    return baseParts.length > 0 ? `/${baseParts.join('/')}/` : '/';
+  }
+  return pathname;
+}
+
+function buildAppUrl(tab?: 'schedules'): string {
+  const basePath = getPreservedBasePathname();
+  return tab === 'schedules' ? `${basePath}?tab=schedules` : basePath;
+}
+
 function readRequestedTabFromUrl(): string | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -56,8 +88,9 @@ function readRequestedTabFromUrl(): string | null {
     const hashClean = window.location.hash.replace(/^#\/?/, '').trim().toLowerCase();
     if (hashClean) return hashClean.split('/')[0].split('?')[0];
 
-    const pathClean = window.location.pathname.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
-    if (pathClean) return pathClean.split('/')[0];
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const lastSegment = parts.length > 0 ? parts[parts.length - 1].trim().toLowerCase() : '';
+    if (lastSegment && KNOWN_APP_ROUTES.has(lastSegment)) return lastSegment;
   } catch {
     return null;
   }
@@ -102,15 +135,23 @@ function AppContent() {
     if (isViewer) {
       if (tab === 'regular-services') {
         setCurrentTab('schedules');
-        if (typeof window !== 'undefined' && (window.location.pathname !== '/' || window.location.search || window.location.hash)) {
-          window.history.replaceState(null, '', '/?tab=schedules');
+        if (typeof window !== 'undefined') {
+          const targetUrl = buildAppUrl('schedules');
+          const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+          if (currentUrl !== targetUrl) {
+            window.history.replaceState(null, '', targetUrl);
+          }
         }
         return;
       }
       if (!VIEWER_ALLOWED_TABS.has(tab)) {
         setCurrentTab('home');
-        if (typeof window !== 'undefined' && (window.location.pathname !== '/' || window.location.search || window.location.hash)) {
-          window.history.replaceState(null, '', '/');
+        if (typeof window !== 'undefined') {
+          const targetUrl = buildAppUrl();
+          const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+          if (currentUrl !== targetUrl) {
+            window.history.replaceState(null, '', targetUrl);
+          }
         }
         return;
       }
@@ -125,7 +166,7 @@ function AppContent() {
     if (role === 'viewer' && typeof window !== 'undefined') {
       const urlTab = readRequestedTabFromUrl();
       if (urlTab && !resolveViewerTab(urlTab)) {
-        window.history.replaceState(null, '', '/');
+        window.history.replaceState(null, '', buildAppUrl());
       }
     }
   }, [role]);
@@ -140,11 +181,11 @@ function AppContent() {
         if (resolved) {
           setCurrentTab(resolved);
           if (urlTab === 'regular-services') {
-            window.history.replaceState(null, '', '/?tab=schedules');
+            window.history.replaceState(null, '', buildAppUrl('schedules'));
           }
         } else {
           setCurrentTab('home');
-          window.history.replaceState(null, '', '/');
+          window.history.replaceState(null, '', buildAppUrl());
         }
       }
     };
@@ -162,8 +203,12 @@ function AppContent() {
     if (isViewer && !VIEWER_ALLOWED_TABS.has(currentTab)) {
       const fallback = currentTab === 'regular-services' ? 'schedules' : 'home';
       setCurrentTab(fallback);
-      if (typeof window !== 'undefined' && (window.location.pathname !== '/' || window.location.search || window.location.hash)) {
-        window.history.replaceState(null, '', fallback === 'schedules' ? '/?tab=schedules' : '/');
+      if (typeof window !== 'undefined') {
+        const targetUrl = buildAppUrl(fallback === 'schedules' ? 'schedules' : undefined);
+        const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        if (currentUrl !== targetUrl) {
+          window.history.replaceState(null, '', targetUrl);
+        }
       }
     }
   }, [isViewer, currentTab]);
@@ -431,13 +476,68 @@ function AppContent() {
   );
 }
 
+interface AppErrorBoundaryState {
+  hasError: boolean;
+  errorMessage: string;
+}
+
+class AppErrorBoundary extends React.Component<{ children: React.ReactNode }, AppErrorBoundaryState> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, errorMessage: '' };
+  }
+
+  static getDerivedStateFromError(error: Error): AppErrorBoundaryState {
+    return {
+      hasError: true,
+      errorMessage: error?.message || 'An unexpected error occurred while loading the app.',
+    };
+  }
+
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('Uncaught app error:', error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen w-full flex items-center justify-center p-4 bg-canvas text-main">
+          <div className="w-full max-w-md rounded-2xl bg-surface border border-subtle shadow-card p-6 sm:p-8 text-center space-y-4">
+            <div className="mx-auto w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-600 dark:text-red-400">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5">
+              <h2 className="text-lg font-bold text-main">Unable to load the page</h2>
+              <p className="text-sm text-sec leading-relaxed">
+                {this.state.errorMessage}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent-hover text-accent-contrast font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <RotateCw className="w-4 h-4" />
+              <span>Reload page</span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <AuthProvider>
-      <DataProvider>
-        <DocumentTitleSync />
-        <AppContent />
-      </DataProvider>
-    </AuthProvider>
+    <AppErrorBoundary>
+      <AuthProvider>
+        <DataProvider>
+          <DocumentTitleSync />
+          <AppContent />
+        </DataProvider>
+      </AuthProvider>
+    </AppErrorBoundary>
   );
 }
