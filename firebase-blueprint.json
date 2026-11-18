@@ -1,0 +1,785 @@
+{
+  "entities": {
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Church settings including church name, logo, theme, accent, and scheduling defaults",
+      "type": "object",
+      "properties": {
+        "churchName": {
+          "type": "string",
+          "description": "The name of the local church",
+          "maxLength": 100
+        },
+        "secretaryName": {
+          "type": "string",
+          "description": "Optional secretary display name used for personal greetings",
+          "maxLength": 100
+        },
+        "churchLogo": {
+          "type": "string",
+          "description": "Base64 data URI of the church logo",
+          "maxLength": 500000
+        },
+        "bannerImage": {
+          "type": "string",
+          "description": "Optional custom banner image",
+          "maxLength": 500000
+        },
+        "theme": {
+          "type": "string",
+          "description": "Base theme mode: white, dark-gray, dark",
+          "enum": ["white", "dark-gray", "dark"]
+        },
+        "accentColor": {
+          "type": "string",
+          "description": "Accent color: maroon, glacier-blue, sage-green, orange",
+          "enum": ["maroon", "glacier-blue", "sage-green", "orange"]
+        },
+        "weekStartDay": {
+          "type": "string",
+          "description": "Which day the week starts on: sunday or monday",
+          "enum": ["sunday", "monday"]
+        },
+        "timeFormat": {
+          "type": "string",
+          "description": "Time display format: 12h or 24h",
+          "enum": ["12h", "24h"]
+        },
+        "initialAccountCreated": {
+          "type": "boolean",
+          "description": "Whether the primary secretary account has been created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["churchName", "theme", "accentColor", "weekStartDay", "timeFormat"]
+    },
+    "OutlineNode": {
+      "title": "OutlineNode",
+      "description": "Infinite outline tree node representing a ministry, group, department, or role",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the node",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Name or title of the ministry or role",
+          "maxLength": 150
+        },
+        "parentId": {
+          "type": "string",
+          "description": "ID of the parent node or empty string for root",
+          "maxLength": 128
+        },
+        "order": {
+          "type": "number",
+          "description": "Relative sort order index"
+        },
+        "isRole": {
+          "type": "boolean",
+          "description": "Whether this node is an assignable role"
+        },
+        "assignedPeopleIds": {
+          "type": "array",
+          "description": "List of person IDs who hold this role"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["id", "title", "parentId", "order"]
+    },
+    "Person": {
+      "title": "Person",
+      "description": "Church member or volunteer who can hold multiple roles",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the person",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the person",
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional contact phone number",
+          "maxLength": 50
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional contact email address",
+          "maxLength": 120
+        },
+        "address": {
+          "type": "string",
+          "description": "Optional mailing or physical address",
+          "maxLength": 200
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional secretary notes about the person",
+          "maxLength": 1000
+        },
+        "roles": {
+          "type": "array",
+          "description": "Array of role IDs that this person holds"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "name"]
+    },
+    "RegularService": {
+      "title": "RegularService",
+      "description": "Weekly recurring service pattern with days of week, time, and required roles",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Service title (e.g., Sunday Morning Worship)",
+          "maxLength": 120
+        },
+        "daysOfWeek": {
+          "type": "array",
+          "description": "Days of week 0=Sun to 6=Sat"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Start time in HH:mm",
+          "maxLength": 10
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Optional end time in HH:mm",
+          "maxLength": 10
+        },
+        "location": {
+          "type": "string",
+          "description": "Location description",
+          "maxLength": 150
+        },
+        "notes": {
+          "type": "string",
+          "description": "Service notes",
+          "maxLength": 1000
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code",
+          "maxLength": 20
+        },
+        "requiredRoles": {
+          "type": "array",
+          "description": "List of required role specs {roleId, roleName, count}"
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["service", "activity"],
+          "description": "Kind of regular occurrence: service (default if omitted) or activity"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "name", "daysOfWeek", "startTime"]
+    },
+    "ServiceOverride": {
+      "title": "ServiceOverride",
+      "description": "Cancellation or alteration for a single date of a recurring service",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Compound ID: serviceId_YYYY-MM-DD",
+          "maxLength": 150
+        },
+        "serviceId": {
+          "type": "string",
+          "description": "Parent recurring service ID",
+          "maxLength": 128
+        },
+        "date": {
+          "type": "string",
+          "description": "Date formatted YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "isCancelled": {
+          "type": "boolean",
+          "description": "Whether this occurrence is cancelled"
+        },
+        "name": {
+          "type": "string",
+          "description": "Custom name override if changed",
+          "maxLength": 120
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Custom start time override",
+          "maxLength": 10
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Custom end time override",
+          "maxLength": 10
+        },
+        "location": {
+          "type": "string",
+          "description": "Custom location override",
+          "maxLength": 150
+        },
+        "notes": {
+          "type": "string",
+          "description": "Custom notes override",
+          "maxLength": 1000
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "serviceId", "date"]
+    },
+    "ChurchEvent": {
+      "title": "ChurchEvent",
+      "description": "One-time calendar event or event template",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Event title",
+          "maxLength": 150
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Start time HH:mm",
+          "maxLength": 10
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Optional end time HH:mm",
+          "maxLength": 10
+        },
+        "location": {
+          "type": "string",
+          "description": "Location",
+          "maxLength": 150
+        },
+        "notes": {
+          "type": "string",
+          "description": "Notes",
+          "maxLength": 2000
+        },
+        "category": {
+          "type": "string",
+          "description": "Category name",
+          "maxLength": 50
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code",
+          "maxLength": 20
+        },
+        "requiredRoles": {
+          "type": "array",
+          "description": "List of required role specs {roleId, roleName, count}"
+        },
+        "isTemplate": {
+          "type": "boolean",
+          "description": "True if saved as a reusable template"
+        },
+        "templateName": {
+          "type": "string",
+          "description": "Name of the template if isTemplate is true",
+          "maxLength": 120
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "title"]
+    },
+    "RoleAssignment": {
+      "title": "RoleAssignment",
+      "description": "Single source of truth assignment for a person to a role in a service or event on a date",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "maxLength": 150
+        },
+        "targetType": {
+          "type": "string",
+          "description": "Type of target: regular_service or event",
+          "enum": ["regular_service", "event"]
+        },
+        "targetId": {
+          "type": "string",
+          "description": "ID of service or event",
+          "maxLength": 128
+        },
+        "date": {
+          "type": "string",
+          "description": "Date YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "roleId": {
+          "type": "string",
+          "description": "Role ID from outline nodes",
+          "maxLength": 128
+        },
+        "roleName": {
+          "type": "string",
+          "description": "Role display name",
+          "maxLength": 120
+        },
+        "slotIndex": {
+          "type": "number",
+          "description": "Slot index (0, 1, 2...) for multiple required roles"
+        },
+        "personId": {
+          "type": "string",
+          "description": "Person ID or empty string if custom name",
+          "maxLength": 128
+        },
+        "personName": {
+          "type": "string",
+          "description": "Assigned person display name",
+          "maxLength": 120
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Start time HH:mm",
+          "maxLength": 10
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Optional end time HH:mm",
+          "maxLength": 10
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "targetType", "targetId", "date", "roleId", "roleName", "personName"]
+    },
+    "EventCategory": {
+      "title": "EventCategory",
+      "description": "User-created event category with a custom color label",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Category name",
+          "maxLength": 50
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code",
+          "maxLength": 20
+        }
+      },
+      "required": ["id", "name", "color"]
+    },
+    "Schedule": {
+      "title": "Schedule",
+      "description": "Schedule card for a role across a date range and set of services",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier",
+          "maxLength": 128
+        },
+        "roleId": {
+          "type": "string",
+          "description": "Role ID from outline nodes",
+          "maxLength": 128
+        },
+        "roleName": {
+          "type": "string",
+          "description": "Role display name",
+          "maxLength": 150
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date YYYY-MM-DD",
+          "maxLength": 15
+        },
+        "serviceIds": {
+          "type": "array",
+          "description": "List of regular service IDs included in this schedule"
+        },
+        "includeEvents": {
+          "type": "boolean",
+          "description": "Whether to include one-time events requiring this role"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "roleId", "startDate", "endDate", "serviceIds"]
+    },
+    "MessageTemplate": {
+      "title": "MessageTemplate",
+      "description": "Templates for composing recurring service reminders with dynamic role assignments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "linkedServiceId": { "type": "string", "maxLength": 128 },
+        "headerText": { "type": "string", "maxLength": 2000 },
+        "roleLines": { "type": "array" },
+        "closingText": { "type": "string", "maxLength": 1000 },
+        "reminder": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "headerText"]
+    },
+    "SentReminder": {
+      "title": "SentReminder",
+      "description": "Log of service reminders marked as sent by date and occurrence",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "templateId": { "type": "string", "maxLength": 128 },
+        "occurrenceDate": { "type": "string", "maxLength": 15 },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "sentAt": { "type": "string" }
+      },
+      "required": ["id", "templateId", "occurrenceDate", "targetId", "sentAt"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Church ministry task with priority, due date, category, assignments, repeating rules, and link to services or events",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "details": { "type": "string", "maxLength": 3000 },
+        "categoryId": { "type": "string", "maxLength": 128 },
+        "priority": { "type": "string", "enum": ["low", "normal", "high"] },
+        "dueDate": { "type": "string", "maxLength": 15 },
+        "dueTime": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "enum": ["todo", "in_progress", "done"] },
+        "assignedTo": { "type": "string", "maxLength": 150 },
+        "assignedPersonId": { "type": "string", "maxLength": 128 },
+        "link": { "type": "object" },
+        "repeat": { "type": "object" },
+        "completedDates": { "type": "array" },
+        "snoozedUntil": { "type": "string", "maxLength": 15 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "priority", "status"]
+    },
+    "TaskCategory": {
+      "title": "TaskCategory",
+      "description": "User created category for grouping church tasks with color labeling",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 80 },
+        "color": { "type": "string", "maxLength": 30 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "color"]
+    },
+    "ForerunnerAsset": {
+      "title": "ForerunnerAsset",
+      "description": "Background image assets for Forerunner bulletin printing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "type": { "type": "string", "maxLength": 50 },
+        "imageData": { "type": "string", "maxLength": 1000000 },
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "type", "imageData", "updatedAt"]
+    },
+    "ForerunnerBulletin": {
+      "title": "ForerunnerBulletin",
+      "description": "Sunday bulletin content with date, verse, pastor's heart, events, and birthday celebrators",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 30 },
+        "bulletinDate": { "type": "string", "maxLength": 15 },
+        "status": { "type": "string", "enum": ["draft", "done"] },
+        "verseReference": { "type": "string", "maxLength": 100 },
+        "verseText": { "type": "string", "maxLength": 1000 },
+        "pastorHeartText": { "type": "string", "maxLength": 3000 },
+        "upcomingEvents": { "type": "array" },
+        "birthdayCelebrators": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "bulletinDate", "status"]
+    },
+    "Visitor": {
+      "title": "Visitor",
+      "description": "Church visitor record with visit dates and follow-up tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "age": { "type": "number" },
+        "civilStatus": { "type": "string", "enum": ["Single", "Married", "Widowed", "Separated", "Other"] },
+        "address": { "type": "string", "maxLength": 300 },
+        "barangay": { "type": "string", "maxLength": 120 },
+        "contact": { "type": "string", "maxLength": 60 },
+        "invitedBy": { "type": "string", "maxLength": 150 },
+        "serviceName": { "type": "string", "maxLength": 150 },
+        "visits": { "type": "array", "items": { "type": "string" } },
+        "followUpStatus": { "type": "string", "enum": ["To follow up", "Followed up", "Not needed"] },
+        "followUpNote": { "type": "string", "maxLength": 500 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "visits", "followUpStatus"]
+    },
+    "VisitorSettings": {
+      "title": "VisitorSettings",
+      "description": "Configurable age group boundaries for visitor analytics",
+      "type": "object",
+      "properties": {
+        "ageGroups": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ageGroups"]
+    },
+    "PublicBranding": {
+      "title": "PublicBranding",
+      "description": "Public church logo, name, accent color, and viewer access mode metadata (never contains passcode)",
+      "type": "object",
+      "properties": {
+        "churchName": { "type": "string", "maxLength": 100 },
+        "churchLogo": { "type": "string", "maxLength": 500000 },
+        "accentColor": { "type": "string", "maxLength": 30 },
+        "theme": { "type": "string", "maxLength": 30 },
+        "weekStartDay": { "type": "string", "maxLength": 20 },
+        "timeFormat": { "type": "string", "maxLength": 10 },
+        "showDailyVerse": { "type": "boolean" },
+        "facebookLink": { "type": "string", "maxLength": 300 },
+        "initialAccountCreated": { "type": "boolean" },
+        "viewerMode": { "type": "string", "enum": ["open", "passcode"] },
+        "viewerPasscodeConfigured": { "type": "boolean" },
+        "viewerPasscodeVersion": { "type": "number" },
+        "viewerIdleMinutes": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["churchName", "viewerMode", "viewerPasscodeConfigured", "viewerPasscodeVersion"]
+    },
+    "ViewerSettings": {
+      "title": "ViewerSettings",
+      "description": "Secretary-only viewer access mode, 6-digit passcode, and idle logout configuration",
+      "type": "object",
+      "properties": {
+        "mode": { "type": "string", "enum": ["open", "passcode"] },
+        "passcode": { "type": "string", "maxLength": 6 },
+        "passcodeVersion": { "type": "number" },
+        "secretaryIdleMinutes": { "type": "number" },
+        "viewerIdleMinutes": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["mode", "passcode", "passcodeVersion"]
+    },
+    "PersonPublic": {
+      "title": "PersonPublic",
+      "description": "Viewer-safe copy of member record with full name, department, and birthday month/day only",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120 },
+        "department": { "type": "string", "maxLength": 80 },
+        "birthdayMonth": { "type": "number" },
+        "birthdayDay": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    },
+    "ViewerUnlock": {
+      "title": "ViewerUnlock",
+      "description": "Per-viewer passcode verification document keyed by anonymous auth uid",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "maxLength": 6 },
+        "passcodeVersion": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["code", "passcodeVersion", "updatedAt"]
+    },
+    "ViewerNote": {
+      "title": "ViewerNote",
+      "description": "Create-only viewer note submission for secretary review",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "maxLength": 500 },
+        "name": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "done"] }
+      },
+      "required": ["message", "createdAt", "status"]
+    }
+  },
+  "firestore": {
+    "/settings/{settingId}": {
+      "schema": "AppSettings",
+      "description": "Church settings document (id: 'app')"
+    },
+    "/public_branding/{docId}": {
+      "schema": "PublicBranding",
+      "description": "Public church branding and viewer access mode document"
+    },
+    "/viewer_settings/{settingId}": {
+      "schema": "ViewerSettings",
+      "description": "Viewer access settings document (id: 'config')"
+    },
+    "/viewer_unlocks/{uid}": {
+      "schema": "ViewerUnlock",
+      "description": "Viewer passcode verification documents keyed by auth uid"
+    },
+    "/viewer_notes/{noteId}": {
+      "schema": "ViewerNote",
+      "description": "Notes submitted by viewers"
+    },
+    "/schedules/{scheduleId}": {
+      "schema": "Schedule",
+      "description": "Schedules for ministry roles across date periods"
+    },
+    "/outline_nodes/{nodeId}": {
+      "schema": "OutlineNode",
+      "description": "Ministries, groups, and roles in the Workflowy-style outline"
+    },
+    "/people/{personId}": {
+      "schema": "Person",
+      "description": "Church members, volunteers, and staff"
+    },
+    "/people_public/{personId}": {
+      "schema": "PersonPublic",
+      "description": "Viewer-safe copy of members (name, department, birthday month & day only)"
+    },
+    "/regular_services/{serviceId}": {
+      "schema": "RegularService",
+      "description": "Recurring regular services"
+    },
+    "/service_overrides/{overrideId}": {
+      "schema": "ServiceOverride",
+      "description": "Single occurrence cancellations or modifications for regular services"
+    },
+    "/events/{eventId}": {
+      "schema": "ChurchEvent",
+      "description": "One-time church calendar events and saved event templates"
+    },
+    "/assignments/{assignmentId}": {
+      "schema": "RoleAssignment",
+      "description": "Roster assignments by occurrence, date, and role"
+    },
+    "/categories/{categoryId}": {
+      "schema": "EventCategory",
+      "description": "User created categories for events"
+    },
+    "/message_templates/{templateId}": {
+      "schema": "MessageTemplate",
+      "description": "Saved message templates for service reminders"
+    },
+    "/sent_reminders/{reminderId}": {
+      "schema": "SentReminder",
+      "description": "Records of dispatched reminders by occurrence date"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Church tasks and action items"
+    },
+    "/task_categories/{categoryId}": {
+      "schema": "TaskCategory",
+      "description": "User created categories for tasks"
+    },
+    "/forerunner_assets/{assetId}": {
+      "schema": "ForerunnerAsset",
+      "description": "Page background image assets"
+    },
+    "/forerunner_bulletins/{bulletinId}": {
+      "schema": "ForerunnerBulletin",
+      "description": "Sunday bulletin records"
+    },
+    "/visitors/{visitorId}": {
+      "schema": "Visitor",
+      "description": "First-time and returning visitor records"
+    },
+    "/visitor_settings/{settingId}": {
+      "schema": "VisitorSettings",
+      "description": "Visitor settings document (id: 'config')"
+    }
+  }
+}
+

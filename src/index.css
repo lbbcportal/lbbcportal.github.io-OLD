@@ -1,0 +1,1200 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color-scheme: dark;
+
+  /* Default theme fallback: Classic Dark (tokens injected dynamically from src/lib/themes.ts) */
+  --bg-canvas: #1e293b;
+  --bg-surface: #0f172a;
+  --bg-field: #0f172a;
+  --bg-surface-hover: #1e293b;
+  --bg-surface-active: #334155;
+  --bg-subtle: #1e293b;
+  --border-subtle: #334155;
+  --border-strong: #475569;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.35);
+  --shadow-dropdown: 0 10px 24px -3px rgb(0 0 0 / 0.55);
+  --cal-cell-border: #3e4f68;
+  --cal-cell-border-outside: #233044;
+  --cal-cell-border-hover: #94a3b8;
+
+  /* Accent: Red (default) */
+  --accent-base: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-active: #991b1b;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #fca5a5;
+  --accent-tint: rgba(248, 113, 113, 0.16);
+  --accent-tint-strong: rgba(248, 113, 113, 0.26);
+  --accent-border: #f87171;
+  --accent-ring: rgba(248, 113, 113, 0.45);
+  --accent-gradient-start: #991b1b;
+  --accent-gradient-end: #dc2626;
+}
+
+[data-color-scheme="light"] {
+  color-scheme: light;
+}
+
+[data-color-scheme="dark"] {
+  color-scheme: dark;
+}
+
+/* ================= ACCENT COLORS (LIGHT SCHEME — >= 4.5:1 CONTRAST ON ALL LIGHT THEMES) ================= */
+[data-color-scheme="light"][data-accent="red"],
+[data-color-scheme="light"][data-accent="maroon"],
+[data-accent="red"],
+[data-accent="maroon"] {
+  --accent-base: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-active: #991b1b;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #a61818;
+  --accent-tint: rgba(220, 38, 38, 0.08);
+  --accent-tint-strong: rgba(220, 38, 38, 0.15);
+  --accent-border: #b91c1c;
+  --accent-ring: rgba(185, 28, 28, 0.35);
+  --accent-gradient-start: #dc2626;
+  --accent-gradient-end: #7f1d1d;
+}
+
+[data-color-scheme="light"][data-accent="orange"],
+[data-accent="orange"] {
+  --accent-base: #c2410c;
+  --accent-hover: #9a3412;
+  --accent-active: #7c2d12;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #8e2e0f;
+  --accent-tint: rgba(194, 65, 12, 0.08);
+  --accent-tint-strong: rgba(194, 65, 12, 0.15);
+  --accent-border: #b43b0b;
+  --accent-ring: rgba(194, 65, 12, 0.35);
+  --accent-gradient-start: #c2410c;
+  --accent-gradient-end: #7c2d12;
+}
+
+[data-color-scheme="light"][data-accent="gold"],
+[data-accent="gold"] {
+  --accent-base: #eab308;
+  --accent-hover: #d99b06;
+  --accent-active: #b47b04;
+  --accent-text: #111827;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #75420b;
+  --accent-tint: rgba(234, 179, 8, 0.14);
+  --accent-tint-strong: rgba(234, 179, 8, 0.22);
+  --accent-border: #8a5b00;
+  --accent-ring: rgba(154, 103, 0, 0.35);
+  --accent-gradient-start: #ca8a04;
+  --accent-gradient-end: #713f12;
+}
+
+[data-color-scheme="light"][data-accent="sage-green"],
+[data-accent="sage-green"] {
+  --accent-base: #2d7d4a;
+  --accent-hover: #225f38;
+  --accent-active: #184729;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #1a5730;
+  --accent-tint: rgba(45, 125, 74, 0.09);
+  --accent-tint-strong: rgba(45, 125, 74, 0.16);
+  --accent-border: #1e5d35;
+  --accent-ring: rgba(35, 107, 62, 0.35);
+  --accent-gradient-start: #2d7d4a;
+  --accent-gradient-end: #143d23;
+}
+
+[data-color-scheme="light"][data-accent="glacier-blue"],
+[data-accent="glacier-blue"] {
+  --accent-base: #0275b1;
+  --accent-hover: #026193;
+  --accent-active: #014c74;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #025887;
+  --accent-tint: rgba(2, 117, 177, 0.08);
+  --accent-tint-strong: rgba(2, 117, 177, 0.15);
+  --accent-border: #026396;
+  --accent-ring: rgba(2, 117, 177, 0.35);
+  --accent-gradient-start: #0275b1;
+  --accent-gradient-end: #0c4a6e;
+}
+
+[data-color-scheme="light"][data-accent="purple"],
+[data-accent="purple"] {
+  --accent-base: #7e3af2;
+  --accent-hover: #6d28d9;
+  --accent-active: #5b21b6;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #6022c7;
+  --accent-tint: rgba(126, 58, 242, 0.08);
+  --accent-tint-strong: rgba(126, 58, 242, 0.15);
+  --accent-border: #6d28d9;
+  --accent-ring: rgba(124, 58, 237, 0.35);
+  --accent-gradient-start: #7c3aed;
+  --accent-gradient-end: #4c1d95;
+}
+
+/* ================= ACCENT ADJUSTMENTS FOR DARK SCHEME (HIGH CONTRAST) ================= */
+[data-color-scheme="dark"][data-accent="red"],
+[data-color-scheme="dark"][data-accent="maroon"] {
+  --accent-base: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-active: #991b1b;
+  --accent-text: #ffffff;
+  --accent-chip-bg: rgba(0, 0, 0, 0.22);
+  --accent-ink: #fca5a5;
+  --accent-tint: rgba(248, 113, 113, 0.16);
+  --accent-tint-strong: rgba(248, 113, 113, 0.26);
+  --accent-border: #f87171;
+  --accent-ring: rgba(248, 113, 113, 0.45);
+  --accent-gradient-start: #991b1b;
+  --accent-gradient-end: #dc2626;
+}
+
+[data-color-scheme="dark"][data-accent="orange"] {
+  --accent-base: #fb923c;
+  --accent-hover: #f97316;
+  --accent-active: #ea580c;
+  --accent-text: #111827;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #fdba74;
+  --accent-tint: rgba(251, 146, 60, 0.16);
+  --accent-tint-strong: rgba(251, 146, 60, 0.26);
+  --accent-border: #fb923c;
+  --accent-ring: rgba(251, 146, 60, 0.45);
+  --accent-gradient-start: #9a3412;
+  --accent-gradient-end: #ea580c;
+}
+
+[data-color-scheme="dark"][data-accent="gold"] {
+  --accent-base: #facc15;
+  --accent-hover: #eab308;
+  --accent-active: #ca8a04;
+  --accent-text: #111827;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #fde047;
+  --accent-tint: rgba(250, 204, 21, 0.16);
+  --accent-tint-strong: rgba(250, 204, 21, 0.26);
+  --accent-border: #facc15;
+  --accent-ring: rgba(250, 204, 21, 0.45);
+  --accent-gradient-start: #a16207;
+  --accent-gradient-end: #eab308;
+}
+
+[data-color-scheme="dark"][data-accent="sage-green"] {
+  --accent-base: #4ade80;
+  --accent-hover: #22c55e;
+  --accent-active: #16a34a;
+  --accent-text: #052e16;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #86efac;
+  --accent-tint: rgba(74, 222, 128, 0.16);
+  --accent-tint-strong: rgba(74, 222, 128, 0.26);
+  --accent-border: #4ade80;
+  --accent-ring: rgba(74, 222, 128, 0.45);
+  --accent-gradient-start: #166534;
+  --accent-gradient-end: #22c55e;
+}
+
+[data-color-scheme="dark"][data-accent="glacier-blue"] {
+  --accent-base: #38bdf8;
+  --accent-hover: #0ea5e9;
+  --accent-active: #0284c7;
+  --accent-text: #082f49;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #7dd3fc;
+  --accent-tint: rgba(56, 189, 248, 0.16);
+  --accent-tint-strong: rgba(56, 189, 248, 0.26);
+  --accent-border: #38bdf8;
+  --accent-ring: rgba(56, 189, 248, 0.45);
+  --accent-gradient-start: #075985;
+  --accent-gradient-end: #0ea5e9;
+}
+
+[data-color-scheme="dark"][data-accent="purple"] {
+  --accent-base: #c084fc;
+  --accent-hover: #a855f7;
+  --accent-active: #9333ea;
+  --accent-text: #110824;
+  --accent-chip-bg: rgba(255, 255, 255, 0.30);
+  --accent-ink: #d8b4fe;
+  --accent-tint: rgba(192, 132, 252, 0.16);
+  --accent-tint-strong: rgba(192, 132, 252, 0.26);
+  --accent-border: #c084fc;
+  --accent-ring: rgba(192, 132, 252, 0.45);
+  --accent-gradient-start: #5b21b6;
+  --accent-gradient-end: #8b5cf6;
+}
+
+/* ================= UTILITY CLASSES FOR CSS VARS ================= */
+.bg-canvas { background-color: var(--bg-canvas); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-field { background-color: var(--bg-field); }
+.bg-surface-hover:hover { background-color: var(--bg-surface-hover); }
+.bg-surface-active { background-color: var(--bg-surface-active); }
+.bg-subtle { background-color: var(--bg-subtle); }
+.border-subtle { border-color: var(--border-subtle); }
+.border-strong { border-color: var(--border-strong); }
+.text-main { color: var(--text-primary); }
+.text-sec { color: var(--text-secondary); }
+.text-mut { color: var(--text-muted); }
+.ring-offset-surface { --tw-ring-offset-color: var(--bg-surface); }
+.ring-offset-canvas { --tw-ring-offset-color: var(--bg-canvas); }
+
+/* Soft subtle divide borders and table dividers across all themes */
+.divide-subtle > * {
+  border-color: var(--border-subtle);
+}
+.divide-subtle > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-subtle);
+}
+table tr,
+table td,
+table th {
+  border-color: var(--border-subtle);
+}
+
+.bg-accent {
+  background-color: var(--accent-base);
+  color: var(--accent-text);
+}
+.hover\:bg-accent-hover:hover { background-color: var(--accent-hover); }
+.text-accent { color: var(--accent-ink); }
+.text-accent-contrast,
+.text-accent-fg,
+.bg-accent.text-white,
+.bg-accent .text-white {
+  color: var(--accent-text) !important;
+}
+.border-accent { border-color: var(--accent-border); }
+.bg-accent-tint { background-color: var(--accent-tint); }
+.bg-accent-tint-strong { background-color: var(--accent-tint-strong); }
+.bg-accent-chip {
+  background-color: var(--accent-chip-bg, rgba(0, 0, 0, 0.22));
+  color: var(--accent-text);
+}
+
+/* ================= COMPACT CALENDAR DAY OUTLINES ================= */
+.cal-day-cell {
+  border: 1px solid var(--cal-cell-border);
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+.cal-day-cell:hover {
+  border-color: var(--cal-cell-border-hover);
+  background-color: var(--bg-surface-hover);
+}
+.cal-day-cell-outside {
+  border: 1px solid var(--cal-cell-border-outside);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.cal-day-cell-outside:hover {
+  border-color: var(--cal-cell-border-hover);
+  background-color: var(--bg-surface-hover);
+}
+.cal-day-cell-selected {
+  border: 1.5px solid var(--cal-cell-border-hover);
+  background-color: var(--bg-surface-hover);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--cal-cell-border-hover) 35%, transparent);
+}
+.cal-day-cell-today {
+  border: 2px solid var(--accent-border);
+  background-color: var(--accent-tint);
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+.cal-day-cell-today:hover {
+  border-color: var(--accent-border);
+  background-color: var(--accent-tint-strong);
+}
+.cal-day-cell-today-selected {
+  border: 2px solid var(--accent-border);
+  background-color: var(--accent-tint-strong);
+  box-shadow: 0 0 0 1px var(--accent-ring);
+}
+.cal-month-cell-today {
+  background-color: var(--accent-tint);
+  box-shadow: inset 0 0 0 2px var(--accent-border);
+}
+.cal-month-cell-today:hover {
+  background-color: var(--accent-tint-strong);
+}
+.cal-list-today {
+  background-color: var(--accent-tint);
+  box-shadow: inset 0 0 0 2px var(--accent-border);
+}
+
+/* ================= DROPDOWN / SELECT / SCROLLBAR STYLING FOR ALL THEMES ================= */
+* {
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+select {
+  background-color: var(--bg-field);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+select option,
+select optgroup {
+  background-color: var(--bg-field);
+  color: var(--text-primary);
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Forerunner Studio: Uncertain words from handwriting transcription */
+.unclear, [data-unclear="true"] {
+  background-color: rgba(251, 191, 36, 0.25);
+  border-bottom: 2px dashed #f59e0b;
+  border-radius: 2px;
+  padding: 0 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.unclear:hover, [data-unclear="true"]:hover {
+  background-color: rgba(251, 191, 36, 0.4);
+}
+
+/* ================= LOGIN SCREEN ANIMATIONS (RESPECTS REDUCE MOTION) ================= */
+@keyframes loginGlowDrift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translate3d(18px, -14px, 0) scale(1.06);
+    opacity: 0.58;
+  }
+}
+
+@keyframes loginFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loginGentleShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.login-bg-navy {
+  background: radial-gradient(circle at 50% 0%, #152546 0%, #0a1428 48%, #050a16 100%);
+}
+
+.login-glow-orb {
+  background: radial-gradient(circle, var(--accent-tint-strong) 0%, rgba(30, 64, 175, 0.14) 45%, transparent 72%);
+  animation: loginGlowDrift 14s ease-in-out infinite;
+}
+
+.login-fade-in {
+  animation: loginFadeIn 320ms ease-out both;
+}
+
+.login-shake {
+  animation: loginGentleShake 360ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-glow-orb,
+  .login-fade-in,
+  .login-shake {
+    animation: none !important;
+  }
+}
+
+/* ================= VIEWER WELCOME OVERLAY ANIMATIONS ================= */
+.viewer-welcome-bg {
+  background: linear-gradient(160deg, #0c1933 0%, #071022 52%, #030712 100%);
+}
+
+@keyframes viewerWelcomeLightDrift {
+  0%, 100% {
+    transform: translate3d(-50%, -6%, 0) scale(1);
+    opacity: 0.36;
+  }
+  50% {
+    transform: translate3d(-46%, 4%, 0) scale(1.08);
+    opacity: 0.52;
+  }
+}
+
+@keyframes viewerWelcomeLogoIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes viewerWelcomeEyebrowIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes viewerWelcomeTitleUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes viewerWelcomeLineDraw {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.viewer-welcome-light {
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    rgba(56, 108, 198, 0.22) 0%,
+    rgba(30, 58, 138, 0.12) 44%,
+    transparent 74%
+  );
+  animation: viewerWelcomeLightDrift 16s ease-in-out infinite;
+}
+
+.viewer-welcome-vignette {
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    transparent 38%,
+    rgba(2, 6, 18, 0.58) 100%
+  );
+}
+
+.viewer-welcome-logo {
+  filter:
+    drop-shadow(0 0 18px rgba(186, 214, 255, 0.3))
+    drop-shadow(0 0 42px rgba(96, 165, 250, 0.16));
+  animation: viewerWelcomeLogoIn 720ms cubic-bezier(0.22, 1, 0.36, 1) 40ms both;
+}
+
+.viewer-welcome-eyebrow {
+  animation: viewerWelcomeEyebrowIn 540ms cubic-bezier(0.22, 1, 0.36, 1) 340ms both;
+}
+
+.viewer-welcome-title {
+  animation: viewerWelcomeTitleUp 640ms cubic-bezier(0.22, 1, 0.36, 1) 560ms both;
+}
+
+.viewer-welcome-line {
+  transform-origin: left center;
+  animation: viewerWelcomeLineDraw 880ms cubic-bezier(0.22, 1, 0.36, 1) 860ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer-welcome-light {
+    animation: none !important;
+    opacity: 0.42 !important;
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+  .viewer-welcome-logo,
+  .viewer-welcome-eyebrow,
+  .viewer-welcome-title {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .viewer-welcome-line {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: scaleX(1) !important;
+  }
+}
+
+@keyframes homeGreetingEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.home-greeting-enter {
+  animation: homeGreetingEnter 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-greeting-enter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ================= SUBTLE APP MOTION SYSTEM (CSS-ONLY, <= 0.3s, NO LOOPS) ================= */
+@keyframes motionPageEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motionListFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes motionBackdropIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes motionPopupIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motionDropdownIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -4px, 0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes motionNoticeIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -5px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 1. Page entrance (backwards + transform: none at 100% keeps fixed modals & sticky headers safe) */
+.motion-page-enter {
+  animation: motionPageEnter 200ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* 2. List entrance on first display (opacity only, zero layout shift) */
+.motion-list-enter {
+  animation: motionListFadeIn 180ms ease-out backwards;
+}
+
+/* 3. Popups, backdrops, dropdowns, and inline notices */
+.motion-backdrop-in,
+.animate-in.fade-in:not(.zoom-in-95):not(.slide-in-from-top-2):not(.motion-popup-in):not(.motion-dropdown-in):not(.motion-notice-in) {
+  animation: motionBackdropIn 160ms ease-out backwards;
+}
+
+.motion-popup-in,
+.animate-in.zoom-in-95:not(.motion-dropdown-in) {
+  animation: motionPopupIn 180ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.motion-dropdown-in {
+  transform-origin: top center;
+  animation: motionDropdownIn 160ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.motion-notice-in,
+.animate-in.slide-in-from-top-2 {
+  animation: motionNoticeIn 180ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* 4. Buttons: subtle hover & soft press (no bounce; excludes calendar cells, login, welcome, previews) */
+button:not(:disabled):not([class*="cal-day-cell"]):not([data-no-motion="true"]):not([data-no-motion="true"] *):not(.login-bg-navy *):not(.viewer-welcome-bg):not(.viewer-welcome-bg *) {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease,
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+button:not(:disabled):not([class*="cal-day-cell"]):not([class*="active:scale-"]):not([data-no-motion="true"]):not([data-no-motion="true"] *):not(.login-bg-navy *):not(.viewer-welcome-bg):not(.viewer-welcome-bg *):active {
+  transform: scale(0.985);
+}
+
+/* 5. Cards: gentle hover & press elevation (zero bounce) */
+.motion-card {
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .motion-card:hover {
+    transform: translate3d(0, -1px, 0);
+  }
+}
+
+.motion-card.cursor-pointer:active {
+  transform: translate3d(0, 0, 0) scale(0.992);
+}
+
+/* Explicit zero-motion shield for Forerunner Studio previews and measured boxes */
+[data-no-motion="true"],
+[data-no-motion="true"] * {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-page-enter,
+  .motion-list-enter,
+  .motion-backdrop-in,
+  .motion-popup-in,
+  .motion-dropdown-in,
+  .motion-notice-in,
+  .animate-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .motion-card,
+  .motion-card:hover,
+  .motion-card.cursor-pointer:active,
+  button,
+  button:active {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ================= VIEWER-ONLY RICHER MOTION SYSTEM (CSS-ONLY, SCOPED TO .viewer-motion) ================= */
+/* Curve: cubic-bezier(0.22, 1, 0.36, 1) · Durations: 0.35s–0.6s (interactive 0.25s) · Zero loops */
+
+@keyframes viewerHeaderDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewerPageEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewerFadeUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewerItemFadeUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewerMonthOpacityFade {
+  0% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes viewerPopupIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes viewerBackdropIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes viewerBackdropOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes viewerPopupOut {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes viewerSentFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes viewerDropdownIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Default hidden state for sliding nav indicator outside .viewer-motion */
+.viewer-nav-indicator {
+  display: none;
+}
+
+/* 1. Wait to reveal Viewer header & Home sections until Welcome overlay begins crossfading out */
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) > header {
+  opacity: 0;
+}
+
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-home-section,
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) .motion-page-enter,
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-stagger-rows > div,
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-stagger-cards > div,
+.viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-floating-note-btn {
+  opacity: 0;
+  animation: none !important;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) > header {
+  animation: viewerHeaderDown 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* 1b. Sliding active menu underline in Viewer header */
+@supports (anchor-name: --viewer-active-nav) and (left: anchor(left)) {
+  .viewer-motion nav button[data-nav-active="true"] {
+    anchor-name: --viewer-active-nav;
+  }
+
+  .viewer-motion nav:has(button[data-nav-active="true"]) .viewer-nav-indicator {
+    display: block;
+    position: absolute;
+    bottom: 2px;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--accent-ink);
+    pointer-events: none;
+    position-anchor: --viewer-active-nav;
+    left: calc(anchor(left) + 8px);
+    right: calc(anchor(right) + 8px);
+    transition:
+      left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      right 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .viewer-motion nav button[data-nav-active="true"] .nav-underline-bar {
+    opacity: 0;
+  }
+}
+
+@supports not ((anchor-name: --viewer-active-nav) and (left: anchor(left))) {
+  .viewer-motion nav button[data-nav-active="true"] .nav-underline-bar {
+    width: 75%;
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* 2. Page change: soft fade with gentle upward slide (~0.45s) */
+.viewer-motion .motion-page-enter:not(.viewer-home-page) {
+  animation: viewerPageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .viewer-home-page {
+  animation: none;
+}
+
+/* 3. Home sections sequential stagger (~0.12s step) + Birthdays & Upcoming card stagger */
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-home-section {
+  animation: viewerFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-home-s1 {
+  animation-delay: 0s;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-home-s2 {
+  animation-delay: 0.12s;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-home-s3 {
+  animation-delay: 0.24s;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-home-s4 {
+  animation-delay: 0.36s;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div {
+  animation: viewerItemFadeUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(1) { animation-delay: 0.28s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(2) { animation-delay: 0.32s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(3) { animation-delay: 0.36s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(4) { animation-delay: 0.40s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(5) { animation-delay: 0.44s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(6) { animation-delay: 0.48s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-rows > div:nth-child(n+7) { animation-delay: 0.52s; }
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-cards > div {
+  animation: viewerItemFadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-cards > div:nth-child(1) { animation-delay: 0.40s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-cards > div:nth-child(2) { animation-delay: 0.46s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-cards > div:nth-child(3) { animation-delay: 0.52s; }
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-stagger-cards > div:nth-child(4) { animation-delay: 0.58s; }
+
+/* 4. Viewer cards & buttons: soft hover lift + shadow/glow + click press-down (~0.25s) */
+.viewer-motion .motion-card,
+.viewer-motion .viewer-card {
+  transition:
+    border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .viewer-motion .motion-card:hover,
+  .viewer-motion .viewer-card:hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow:
+      0 10px 24px -6px rgb(0 0 0 / 0.12),
+      0 0 0 1px color-mix(in srgb, var(--accent-base) 22%, transparent);
+  }
+}
+
+.viewer-motion .motion-card.cursor-pointer:active,
+.viewer-motion .viewer-card.cursor-pointer:active {
+  transform: translate3d(0, -1px, 0) scale(0.985);
+}
+
+.viewer-motion button:not(:disabled):not([class*="cal-day-cell"]):not([data-no-motion="true"]):not([data-no-motion="true"] *):not(.login-bg-navy *):not(.viewer-welcome-bg):not(.viewer-welcome-bg *) {
+  transition:
+    background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .viewer-motion button:not(:disabled):not([class*="cal-day-cell"]):not(header nav button):not([data-no-motion="true"]):not([data-no-motion="true"] *):not(.login-bg-navy *):not(.viewer-welcome-bg):not(.viewer-welcome-bg *):is(.bg-accent, .border, .shadow-xs, .shadow-card, .shadow-lg):hover {
+    transform: translate3d(0, -1.5px, 0);
+    box-shadow:
+      0 6px 16px -4px color-mix(in srgb, var(--accent-base) 28%, rgb(0 0 0 / 0.14));
+  }
+}
+
+.viewer-motion button:not(:disabled):not([class*="cal-day-cell"]):not(header nav button):not([data-no-motion="true"]):not([data-no-motion="true"] *):not(.login-bg-navy *):not(.viewer-welcome-bg):not(.viewer-welcome-bg *):active {
+  transform: scale(0.97);
+}
+
+/* 5. Calendar month opacity fade (zero cell movement) & day popup (~0.35s) */
+.viewer-motion .viewer-calendar-month-fade {
+  animation: viewerMonthOpacityFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .motion-backdrop-in,
+.viewer-motion .animate-in.fade-in:not(.zoom-in-95):not(.slide-in-from-top-2):not(.motion-popup-in):not(.motion-dropdown-in):not(.motion-notice-in) {
+  animation: viewerBackdropIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .motion-popup-in,
+.viewer-motion .animate-in.zoom-in-95:not(.motion-dropdown-in) {
+  animation: viewerPopupIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* 6. Dropdowns & Note to the Secretary modal + Sent confirmation */
+.viewer-motion .motion-dropdown-in {
+  transform-origin: top center;
+  animation: viewerDropdownIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .viewer-note-backdrop-out {
+  animation: viewerBackdropOut 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.viewer-motion .viewer-note-dialog-out {
+  animation: viewerPopupOut 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.viewer-motion .viewer-note-sent {
+  animation: viewerSentFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion:not(:has(.viewer-welcome-bg.opacity-100)) .viewer-floating-note-btn {
+  animation: viewerPopupIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+
+/* 7. Lists (Members, Schedules, Services): first display stagger (never replay on search/filter) */
+.viewer-motion .motion-list-enter {
+  animation: viewerFadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .viewer-stagger-grid > div,
+.viewer-motion .viewer-stagger-list > div {
+  animation: viewerItemFadeUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.viewer-motion .viewer-stagger-grid > div:nth-child(1),
+.viewer-motion .viewer-stagger-list > div:nth-child(1) { animation-delay: 0s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(2),
+.viewer-motion .viewer-stagger-list > div:nth-child(2) { animation-delay: 0.06s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(3),
+.viewer-motion .viewer-stagger-list > div:nth-child(3) { animation-delay: 0.12s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(4),
+.viewer-motion .viewer-stagger-list > div:nth-child(4) { animation-delay: 0.18s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(5),
+.viewer-motion .viewer-stagger-list > div:nth-child(5) { animation-delay: 0.24s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(6),
+.viewer-motion .viewer-stagger-list > div:nth-child(6) { animation-delay: 0.30s; }
+.viewer-motion .viewer-stagger-grid > div:nth-child(n+7),
+.viewer-motion .viewer-stagger-list > div:nth-child(n+7) { animation-delay: 0.34s; }
+
+/* 8. Scroll-driven fade-up for below-the-fold sections when supported */
+@supports (animation-timeline: view()) {
+  @keyframes viewerScrollFadeUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .viewer-motion .viewer-scroll-section {
+    animation: viewerScrollFadeUp linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 26%;
+  }
+
+  .viewer-motion .viewer-scroll-section .motion-list-enter,
+  .viewer-motion .viewer-scroll-section .viewer-stagger-grid > div {
+    animation: none;
+  }
+
+  .viewer-motion .viewer-stagger-grid > div:nth-child(n+7) {
+    animation: viewerScrollFadeUp linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 24%;
+    animation-delay: 0s;
+  }
+}
+
+/* 9. Respect prefers-reduced-motion: turn off ALL Viewer movement */
+@media (prefers-reduced-motion: reduce) {
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) > header,
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-home-section,
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) .motion-page-enter,
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-stagger-rows > div,
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-stagger-cards > div,
+  .viewer-motion:has(.viewer-welcome-bg.opacity-100) .viewer-floating-note-btn,
+  .viewer-motion > header,
+  .viewer-motion .motion-page-enter,
+  .viewer-motion .motion-list-enter,
+  .viewer-motion .motion-backdrop-in,
+  .viewer-motion .motion-popup-in,
+  .viewer-motion .motion-dropdown-in,
+  .viewer-motion .animate-in,
+  .viewer-motion .viewer-home-section,
+  .viewer-motion .viewer-stagger-rows > div,
+  .viewer-motion .viewer-stagger-cards > div,
+  .viewer-motion .viewer-stagger-grid > div,
+  .viewer-motion .viewer-stagger-list > div,
+  .viewer-motion .viewer-calendar-month-fade,
+  .viewer-motion .viewer-note-sent,
+  .viewer-motion .viewer-floating-note-btn,
+  .viewer-motion .viewer-scroll-section {
+    animation: none !important;
+    animation-timeline: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .viewer-motion .viewer-note-backdrop-out,
+  .viewer-motion .viewer-note-dialog-out {
+    animation: none !important;
+    opacity: 0 !important;
+    transform: none !important;
+  }
+
+  .viewer-motion .viewer-nav-indicator,
+  .viewer-motion nav button .nav-underline-bar,
+  .viewer-motion .motion-card,
+  .viewer-motion .motion-card:hover,
+  .viewer-motion .motion-card.cursor-pointer:active,
+  .viewer-motion .viewer-card,
+  .viewer-motion .viewer-card:hover,
+  .viewer-motion .viewer-card.cursor-pointer:active,
+  .viewer-motion button,
+  .viewer-motion button:hover,
+  .viewer-motion button:active {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ================= BACK TO TOP PILL (ALL 4 THEMES, 0.25s FADE + SLIDE) ================= */
+.back-to-top-pill {
+  background-color: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--border-strong) 72%, transparent);
+  color: var(--accent-ink);
+  box-shadow: 0 4px 14px -2px rgb(0 0 0 / 0.14), 0 1px 3px 0 rgb(0 0 0 / 0.08);
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  pointer-events: none;
+  transition:
+    opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.back-to-top-pill.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .back-to-top-pill.is-visible:hover {
+    background-color: var(--bg-surface);
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 18px -3px rgb(0 0 0 / 0.18), 0 2px 5px 0 rgb(0 0 0 / 0.1);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.back-to-top-pill.is-visible:active {
+  transform: scale(0.97) !important;
+}
+
+[data-color-scheme="dark"] .back-to-top-pill {
+  background-color: color-mix(in srgb, var(--bg-surface) 90%, transparent);
+  color: var(--accent-ink);
+  box-shadow: 0 6px 18px -2px rgb(0 0 0 / 0.45), 0 1px 3px 0 rgb(0 0 0 / 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top-pill,
+  .back-to-top-pill.is-visible,
+  .back-to-top-pill.is-visible:hover,
+  .back-to-top-pill.is-visible:active {
+    transition: opacity 0.25s ease !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // App settings: read allowed for app metadata (church name, theme, setup status), write requires auth or one-time init
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isSignedIn() || (settingId == 'app' && !exists(/databases/$(database)/documents/settings/app));
+    }
+
+    // Health check / connection test document
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Schedules (cards representing schedule periods for roles)
+    match /schedules/{scheduleId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Outline nodes (ministries, groups, roles)
+    match /outline_nodes/{nodeId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // People
+    match /people/{personId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Regular recurring services
+    match /regular_services/{serviceId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Service single-date overrides and cancellations
+    match /service_overrides/{overrideId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Calendar events and event templates
+    match /events/{eventId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Role roster assignments
+    match /assignments/{assignmentId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Event categories
+    match /categories/{categoryId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Message templates
+    match /message_templates/{templateId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Sent reminders tracking
+    match /sent_reminders/{reminderId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Tasks
+    match /tasks/{taskId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Task categories
+    match /task_categories/{categoryId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Quick notes
+    match /notes/{noteId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Forerunner Sunday School lessons
+    match /forerunner_lessons/{lessonId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Forerunner format settings
+    match /forerunner_settings/{settingId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Forerunner assets (background image, logos)
+    match /forerunner_assets/{assetId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Forerunner Sunday bulletins
+    match /forerunner_bulletins/{bulletinId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // First-time and returning church visitors
+    match /visitors/{visitorId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Visitor analytics age group settings
+    match /visitor_settings/{settingId} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}

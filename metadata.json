@@ -1,0 +1,6 @@
+{
+  "name": "Church Secretary Companion",
+  "description": "An all-in-one management tool for church secretaries to coordinate people, ministries, services, schedules, and events.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
