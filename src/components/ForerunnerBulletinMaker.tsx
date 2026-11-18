@@ -508,6 +508,11 @@ export const ForerunnerBulletinMaker: React.FC<ForerunnerBulletinMakerProps> = (
     setAiError(null);
     setPendingAiDraft(null);
 
+    if (typeof window !== 'undefined' && window.location.hostname.endsWith('.github.io')) {
+      setAiError('Available only in the AI Studio version');
+      return;
+    }
+
     const sourceText = hasLessonSource ? lessonPlainText : lessonMainPoint.trim();
     if (!sourceText) {
       setAiError("Please write a sentence or two in \"Lesson's main point\" first.");
@@ -530,6 +535,11 @@ export const ForerunnerBulletinMaker: React.FC<ForerunnerBulletinMakerProps> = (
             targetWords: wordTargetRange.target
           })
         });
+
+        const contentType = res.headers.get('content-type') || '';
+        if (res.status === 404 || res.status === 405 || !contentType.includes('application/json')) {
+          throw new Error('Available only in the AI Studio version');
+        }
 
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {

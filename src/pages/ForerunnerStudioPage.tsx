@@ -249,6 +249,10 @@ export const ForerunnerStudioPage: React.FC<ForerunnerStudioPageProps> = () => {
   // AI Transcription via Gemini API (Paused - Coming soon)
   const handleReadHandwriting = async () => {
     return; // Paused: nothing calls the Gemini API from this page
+    if (typeof window !== 'undefined' && window.location.hostname.endsWith('.github.io')) {
+      setTranscribeError('Available only in the AI Studio version');
+      return;
+    }
     if (photos.length === 0) return;
 
     setIsTranscribing(true);
@@ -281,6 +285,11 @@ export const ForerunnerStudioPage: React.FC<ForerunnerStudioPageProps> = () => {
             passage
           })
         });
+
+        const contentType = res.headers.get('content-type') || '';
+        if (res.status === 404 || res.status === 405 || !contentType.includes('application/json')) {
+          throw new Error('Available only in the AI Studio version');
+        }
 
         const data = await res.json();
         if (!res.ok) {

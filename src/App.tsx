@@ -63,19 +63,26 @@ const KNOWN_APP_ROUTES = new Set([
 ]);
 
 function getPreservedBasePathname(): string {
-  if (typeof window === 'undefined') return '/';
+  const envBase = import.meta.env.BASE_URL || '/';
+  const normalizedEnvBase = envBase.endsWith('/') ? envBase : `${envBase}/`;
+  if (typeof window === 'undefined') return normalizedEnvBase;
+
   const pathname = window.location.pathname || '/';
+  if (normalizedEnvBase !== '/' && pathname.startsWith(normalizedEnvBase.replace(/\/$/, ''))) {
+    return normalizedEnvBase;
+  }
+
   const parts = pathname.split('/').filter(Boolean);
   if (parts.length > 0 && KNOWN_APP_ROUTES.has(parts[parts.length - 1].toLowerCase())) {
     const baseParts = parts.slice(0, -1);
     return baseParts.length > 0 ? `/${baseParts.join('/')}/` : '/';
   }
-  return pathname;
+  return pathname.endsWith('/') ? pathname : `${pathname}/`;
 }
 
 function buildAppUrl(tab?: 'schedules'): string {
   const basePath = getPreservedBasePathname();
-  return tab === 'schedules' ? `${basePath}?tab=schedules` : basePath;
+  return tab === 'schedules' ? `${basePath}#/schedules` : basePath;
 }
 
 function readRequestedTabFromUrl(): string | null {
